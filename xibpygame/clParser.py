@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TypeVar, Callable, Generic
+from typing import Type, TypeVar, Optional, Iterable, Callable, Generic
 import sys
 
 class CLParser:
@@ -9,11 +9,11 @@ class CLParser:
     each registered options' value (Booleans or Specifics) and other arguments. So, this class is an enhancement of the
     getopt.getopt() function.
     """
-    # Methods:
-    #     addOption(option) -> Adds an option by copying it.
-    #     parse(string) -> Parses the 'string' or sys.argv[1:] and returns options value and others arguments.
 
-    def __init__(self):
+    # TODO: Methods:
+    #     parse(string) -> Parses the 'string' or sys.argv[1:] and returns options' value and others arguments.
+
+    def __init__(self) -> None:
         self._options: list[CLOption] = []
 
     # SETTERS
@@ -24,19 +24,27 @@ class CLParser:
             earlier.
         """
 
-        assert option != None, "What do you trying to give me ? A None value ..."
-
         # TODO: Check to raise SimilarOption error.
         self._options.append(option)
 
     # FUNCTIONS
     def parse(self):
         """"""
-        pass
+        raise NotImplementedError()
 
 T = TypeVar("T")
 class CLOption(Generic[T]):
     """"""
 
-    def __init__(self):
-        pass
+    def __init__(self, id: str, values: Optional[Type | T | Iterable[T]] = None, default: Optional[T] = None) -> None:
+        # TODO: Doc; _values=None means "here or not", _values=Type means "whatever you want of type Type",
+        # _values=T|Iterable[T] means an object of accepted values; _default=None means mandatory, _default=T means the
+        # default value used.
+        self._id = id
+        self._values = values
+        self._default = default
+
+    # GETTERS
+    @staticmethod
+    def getPrefix() -> str:
+        return "--"
